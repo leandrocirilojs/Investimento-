@@ -9,23 +9,25 @@
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             height: 100vh;
-            margin: 0;
-            margin-top: 10px;
-            padding-right: 300px;
+            margin: 10;
         }
+
         .container {
             display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            grid-gap: 10px;
-            width: 90%;
+            grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); /* Ajusta as colunas dinamicamente */
+            gap: 10px;
+            width: 95%;
             max-width: 900px;
+            padding: 10px;
         }
+
         .quadrado {
-            width: 70px;
-            height: 70px;
+            width: 100%;
+            aspect-ratio: 1; /* Mantém os quadrados proporcionais */
             background-color: #4CAF50;
             border: 1px solid #ccc;
             cursor: pointer;
@@ -37,22 +39,37 @@
             font-weight: bold;
             text-align: center;
             user-select: none;
+            border-radius: 5px;
         }
+
         .quadrado.marcado {
             background-color: #8BC34A;
         }
+
         .info {
-            position: fixed;
-            top: 20px;
-            right: 20px;
             background-color: white;
-            padding: 20px;
+            padding: 15px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            font-size: 14px;
+            font-size: 18px;
             text-align: center;
-            width: 100px;
+            width: 250px;
+            margin-top: 20px;
         }
+
+        /* Responsividade */
+        @media (min-width: 600px) {
+            .container {
+                grid-template-columns: repeat(8, 1fr); /* 8 colunas em telas médias */
+            }
+        }
+
+        @media (min-width: 900px) {
+            .container {
+                grid-template-columns: repeat(10, 1fr); /* 10 colunas em telas grandes */
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -80,7 +97,7 @@
                 soma += valor;
             }
 
-            valores.push(valorTotal - soma); // Último quadrado ajusta para atingir R$20.000 exatos
+            valores.push(valorTotal - soma); // Ajusta o último quadrado para atingir 20.000
             return valores;
         }
 
