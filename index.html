@@ -11,24 +11,28 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100%;
-            
+            height: auto;
+            min-height: 100vh;
+            margin: 0;
+            padding-bottom: 50px; /* Evita sobreposição do total */
+        }
+
+        h2 {
+            margin-top: 20px;
         }
 
         .container {
-            margin-top:70px;
+            margin-top: 20px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); /* Ajusta as colunas dinamicamente */
+            grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
             gap: 10px;
             width: 95%;
             max-width: 900px;
-            
         }
 
         .quadrado {
             width: 100%;
-            aspect-ratio: 1; /* Mantém os quadrados proporcionais */
+            aspect-ratio: 1;
             background-color: orange;
             border: 1px solid #ccc;
             cursor: pointer;
@@ -48,6 +52,10 @@
         }
 
         .info {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
             background-color: white;
             padding: 15px;
             border-radius: 10px;
@@ -55,21 +63,18 @@
             font-size: 18px;
             text-align: center;
             width: 250px;
-            margin-top: 20px;
         }
 
         /* Responsividade */
         @media (min-width: 600px) {
             .container {
-                margin-top:50px;
-                grid-template-columns: repeat(8, 1fr); /* 8 colunas em telas médias */
+                grid-template-columns: repeat(8, 1fr);
             }
         }
 
         @media (min-width: 900px) {
             .container {
-                margin-top:50px;
-                grid-template-columns: repeat(10, 1fr); /* 10 colunas em telas grandes */
+                grid-template-columns: repeat(10, 1fr);
             }
         }
 
@@ -94,19 +99,23 @@
             let valores = [];
             let soma = 0;
 
-            for (let i = 0; i < numeroQuadrados - 1; i++) {
+            while (valores.length < numeroQuadrados - 1) {
                 let valor = valoresPossiveis[Math.floor(Math.random() * valoresPossiveis.length)];
                 if (soma + valor > valorTotal) break;
                 valores.push(valor);
                 soma += valor;
             }
 
-            valores.push(valorTotal - soma); // Ajusta o último quadrado para atingir 20.000
+            valores.push(valorTotal - soma); // Ajusta o último quadrado para fechar em 20.000
             return valores;
         }
 
-        const valoresQuadrados = JSON.parse(localStorage.getItem("valoresQuadrados")) || gerarValoresFixos();
-        localStorage.setItem("valoresQuadrados", JSON.stringify(valoresQuadrados));
+        // Recupera valores fixos ou gera novos
+        let valoresQuadrados = JSON.parse(localStorage.getItem("valoresQuadrados"));
+        if (!valoresQuadrados || valoresQuadrados.length !== numeroQuadrados) {
+            valoresQuadrados = gerarValoresFixos();
+            localStorage.setItem("valoresQuadrados", JSON.stringify(valoresQuadrados));
+        }
 
         const quadradosMarcados = JSON.parse(localStorage.getItem("quadradosMarcados")) || [];
 
@@ -123,8 +132,7 @@
             quadrado.addEventListener("click", function () {
                 if (quadrado.classList.contains("marcado")) {
                     quadrado.classList.remove("marcado");
-                    const i = quadradosMarcados.indexOf(index);
-                    quadradosMarcados.splice(i, 1);
+                    quadradosMarcados.splice(quadradosMarcados.indexOf(index), 1);
                 } else {
                     quadrado.classList.add("marcado");
                     quadradosMarcados.push(index);
