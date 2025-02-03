@@ -7,25 +7,28 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #121212;
+            color: white;
             display: flex;
             flex-direction: column;
             align-items: center;
             height: auto;
             min-height: 100vh;
             margin: 0;
-            padding-bottom: 50px; /* Evita sobreposição do total */
+            padding-bottom: 50px;
         }
 
         h2 {
             margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .container {
             margin-top: 20px;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-            gap: 10px;
+            gap: 8px;
             width: 95%;
             max-width: 900px;
         }
@@ -33,8 +36,8 @@
         .quadrado {
             width: 100%;
             aspect-ratio: 1;
-            background-color: orange;
-            border: 1px solid #ccc;
+            background: linear-gradient(135deg, #ff9800, #ff5722);
+            border: none;
             cursor: pointer;
             display: flex;
             justify-content: center;
@@ -44,11 +47,20 @@
             font-weight: bold;
             text-align: center;
             user-select: none;
-            border-radius: 5px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .quadrado:hover {
+            transform: scale(1.05);
+            box-shadow: 4px 4px 12px rgba(255, 152, 0, 0.5);
         }
 
         .quadrado.marcado {
-            background-color: #8BC34A;
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            transform: scale(1.1);
+            box-shadow: 4px 4px 12px rgba(76, 175, 80, 0.7);
         }
 
         .info {
@@ -57,12 +69,14 @@
             left: 50%;
             transform: translateX(-50%);
             background-color: white;
-            padding: 6px;
+            padding: 15px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            font-size: 16px;
+            font-size: 18px;
             text-align: center;
-            width: 100px;
+            width: 250px;
+            color: black;
+            font-weight: bold;
         }
 
         /* Responsividade */
@@ -106,11 +120,10 @@
                 soma += valor;
             }
 
-            valores.push(valorTotal - soma); // Ajusta o último quadrado para fechar em 20.000
+            valores.push(valorTotal - soma); 
             return valores;
         }
 
-        // Recupera valores fixos ou gera novos
         let valoresQuadrados = JSON.parse(localStorage.getItem("valoresQuadrados"));
         if (!valoresQuadrados || valoresQuadrados.length !== numeroQuadrados) {
             valoresQuadrados = gerarValoresFixos();
